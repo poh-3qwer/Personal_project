@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Видалити акаунт</h1>
+    <br>
+    <h2>Ви впевнені, що хочете видалити ваш акаунт?</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <button type="submit">Видалити</button>
+    </form>
+{% endblock %}

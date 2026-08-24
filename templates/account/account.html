@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div>
+        <a href="{% url 'account-detail' account.pk %}">Деталі</a>
+    </div>
+    <div>
+        {% if account.avatar %}
+            <img src="{{ account.avatar.url }}" alt="Аватар" width="200" height="200">
+        {% else %}
+            <img src="{% static 'default_avatar.jpg' %}" alt="Аватар" width="200" height="200">
+        {% endif %}
+    </div>
+    <br>
+    <div>
+        <h3>Ваш акаунт: </h3>
+        <p>Їм'я: {{ account.human_name }}</p>
+        <p>Фамілія: {{ account.human_surname }}</p>
+        <p>Роль: {{ account.role }}</p>
+        <p>Дата реєстрації: {{ account.date_of_registration }}</p>
+    </div>
+{% endblock %}
