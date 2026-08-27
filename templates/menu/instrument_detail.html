@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>Деталі</h1>
+
+    <img src="{{ instrument.instrument_image.url }}" alt="Інструмент" width="300" height="200">
+    <div>
+        <h3>Основна інформація: </h3>
+        <h5>Назва: {{ instrument.name }}</h5>
+        <p>Категорія: {{ instrument.get_category_display }}</p>
+        <p>Виробник: {{ instrument.manufacturer }}</p>
+        <p>Дата виставлення на продажу: {{ instrument.issue_date }}</p>
+        <p>Ціна: {{ instrument.price }}</p>
+    </div>
+    <div>
+        <h3>Додаткова інформація: </h3>
+        <h5>Бренд: {{ instrument.brand }}</h5>
+        <p>Серійний номер: {{ instrument.serial_number }}</p>
+        <p>Рік випуску: {{ instrument.production_year }}</p>
+    </div>
+    <div>
+        <h3>Комплектація та стан: </h3>
+        <p>Стан: {{ instrument.product_condition }}</p>
+        <p>Комплектація: {{ instrument.complectation }}</p>
+    </div>
+
+    <h4>Продавець: {{ instrument.salesman }}</h4>
+
+    <a href="{% url 'edit-instrument-detail' instrument_id=instrument.id %}">Змінити опис</a>
+    <a href="{% url 'delete-instrument' instrument_id=instrument.id %}">Видалити товар</a>
+{% endblock %}

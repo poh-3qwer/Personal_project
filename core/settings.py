@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     #*Installed apps
     
     'core_profile',
+    'core_auth_system',
+    'core_menu',
 ]
 
 MIDDLEWARE = [

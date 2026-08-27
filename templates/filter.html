@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav>
+        <a href="{% url 'instruments-list' %}">Усі</a>
+        <a href="{% url 'instruments-filter' category='string_instruments' %}">Струнні</a>
+        <a href="{% url 'instruments-filter' category='wind_instruments' %}">Духові</a>
+        <a href="{% url 'instruments-filter' category='percussion_instruments' %}">Ударні</a>
+        <a href="{% url 'instruments-filter' category='keyboards' %}">Клавішні</a>
+        <a href="{% url 'instruments-filter' category='electromusical' %}">Електромузичні</a>
+    </nav>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

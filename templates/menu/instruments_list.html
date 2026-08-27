@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    {% include 'filter.html' %}
+
+    <h1>Товари</h1>
+
+    <a href="{% url 'add-instrument' %}">Додати товар</a>
+
+    {% for instrument in instruments_list %}
+        <div>
+            <img src="{{ instrument.instrument_image.url }}" width="300" height="200" alt="Інструмент">
+            <h5>{{ instrument.name }}</h5>
+            <p>{{ instrument.get_category_display }}</p>
+            <p>{{ instrument.manufacturer }}</p>
+            <p>{{ instrument.issue_date }}</p>
+            <p>{{ instrument.price }}</p>
+            <a href="{% url 'instrument-detail' instrument_id=instrument.id %}">Деталі</a>
+        </div>
+    {% endfor %}
+
+{% endblock %}
