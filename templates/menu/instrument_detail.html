@@ -10,7 +10,7 @@
         <p>Категорія: {{ instrument.get_category_display }}</p>
         <p>Виробник: {{ instrument.manufacturer }}</p>
         <p>Дата виставлення на продажу: {{ instrument.issue_date }}</p>
-        <p>Ціна: {{ instrument.price }}</p>
+        <p>Ціна: {{ instrument.price }} ₴</p>
     </div>
     <div>
         <h3>Додаткова інформація: </h3>
@@ -28,4 +28,8 @@
 
     <a href="{% url 'edit-instrument-detail' instrument_id=instrument.id %}">Змінити опис</a>
     <a href="{% url 'delete-instrument' instrument_id=instrument.id %}">Видалити товар</a>
+    <br>
+    {% if user.is_authenticated %}
+        <a href="{% url 'add-to-basket' product_id=instrument.id %}">Додати в кошик</a>
+    {% endif %}
 {% endblock %}

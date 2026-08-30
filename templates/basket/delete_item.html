@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>Видалити з кошика</h1>
+
+    <h3>Ви впевненні, що хочете вилучити цей товар?</h3>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Видалити з кошика</button>
+    </form>
+{% endblock %}

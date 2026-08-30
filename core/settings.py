@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'core_profile',
     'core_auth_system',
     'core_menu',
+    'core_basket',
 ]
 
 MIDDLEWARE = [

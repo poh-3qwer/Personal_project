@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Ваш кошик</h1>
+
+    {% for basket_item in basket_items_list %}
+        <div>
+            <img src="{{ basket_item.product.instrument_image.url }}" width="300" height="200" alt="Інструмент">
+            <h5>{{ basket_item.product.name }}</h5>
+            <p>{{ basket_item.product.get_category_display }}</p>
+            <p>{{ basket_item.product.manufacturer }}</p>
+            <p>{{ basket_item.product.issue_date }}</p>
+            <p>{{ basket_item.product.price }}</p>
+            <a href="{% url 'delete-item' basket_id=basket.pk item_id=basket_item.id %}">Видалити з кошика</a>
+        </div>
+
+        <div>
+            <form method="post" action="{% url 'edit-item-quantity' basket_id=basket_item.basket.id item_id=basket_item.id %}">
+                {% csrf_token %}
+                <button type="submit" name="action" value="decrease"> - </button>
+
+                <span>{{ basket_item.quantity }}</span>
+
+                <button type="submit" name="action" value="increase"> + </button>
+            </form>
+        </div>
+
+    {% empty %}
+        <p>Ваш кошик порожній</p>
+    {% endfor %}
+
+    <p>Загальна сума: {{ total_sum }} ₴</p>
+
+{% endblock %}

@@ -3,12 +3,17 @@ from django.contrib.auth.decorators import login_required
 from core_menu.models import Instrument
 from core_menu.forms import *
 from django.http import HttpResponseForbidden
+from core_basket.models import Basket
 
 
 def instruments_list(request):
     instruments_list = Instrument.objects.all()
 
-    return render(request, 'menu/instruments_list.html', {'instruments_list': instruments_list})
+    basket = None
+    if request.user.is_authenticated:
+        basket, created = Basket.objects.get_or_create(account=request.user.account)
+
+    return render(request, 'menu/instruments_list.html', {'instruments_list': instruments_list, 'basket': basket})
 
 def instrument_detail(request, instrument_id):
     instrument = get_object_or_404(Instrument, pk=instrument_id)

@@ -6,6 +6,9 @@
     <h1>Товари</h1>
 
     <a href="{% url 'add-instrument' %}">Додати товар</a>
+    {% if user.is_authenticated %}
+        <a href="{% url 'basket-items-list' basket_id=basket.pk %}">Ваш кошик</a>
+    {% endif %}
 
     {% for instrument in instruments_list %}
         <div>
@@ -14,8 +17,11 @@
             <p>{{ instrument.get_category_display }}</p>
             <p>{{ instrument.manufacturer }}</p>
             <p>{{ instrument.issue_date }}</p>
-            <p>{{ instrument.price }}</p>
+            <p>{{ instrument.price }} ₴</p>
             <a href="{% url 'instrument-detail' instrument_id=instrument.id %}">Деталі</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'add-to-basket' product_id=instrument.id %}">Додати в кошик</a>
+            {% endif %}
         </div>
     {% endfor %}
 
