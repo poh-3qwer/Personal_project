@@ -4,4 +4,21 @@
     <h3>Тут ви зможете купляти та продавати 
         свої музичні речі, зручно шукати потрібне 
         та мати власну історію купівлі-продажу на сайті</h3>
-{% endblock %}
+
+    {% if user.is_authenticated %}
+        {% if has_products_to_ship %}
+            {% for product in products_to_ship %}
+                <a href="{% url 'sell-message' order_id=product.order.id %}">Товари на відправку</a>
+            {% endfor %}
+        {% endif %}
+        {% for order in cancelled_orders %}
+            <p>Замовлення
+                        {% if order.account == request.user.account %}
+                            <a href="{% url 'order-detail' order_id=order.id %}">{{ order.id }}</a>
+                        {% else %}
+                            {{ order.id }}
+                        {% endif %} 
+            з вашими предметами було скасовано.</p>
+        {% endfor %}
+    {% endif %}
+{% endblock %}     /// Сделать невозможность заказывания продавцом товара самому себе !!!

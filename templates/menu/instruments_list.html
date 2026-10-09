@@ -12,14 +12,24 @@
 
     {% for instrument in instruments_list %}
         <div>
-            <img src="{{ instrument.instrument_image.url }}" width="300" height="200" alt="Інструмент">
+            <img src="{{ instrument.instrument_image.url }}" width="350" height="200" alt="Інструмент">
             <h5>{{ instrument.name }}</h5>
             <p>{{ instrument.get_category_display }}</p>
             <p>{{ instrument.manufacturer }}</p>
             <p>{{ instrument.issue_date }}</p>
-            <p>{{ instrument.price }} ₴</p>
+            <p>{{ instrument.price }} $</p>
+            {% if instrument.quantity > 0 %}
+                <p>В наявності: {{ instrument.quantity }} шт.</p>
+            {% else %}
+                <p>Нема в наявності.</p>
+            {% endif %}
+            {% if instrument.salesman.human_name and instrument.salesman.human_surname %}
+                <p>Продавець: {{ instrument.salesman.human_name }} {{ instrument.salesman.human_surname }}</p>
+            {% else %}
+                <p>Продавець: {{ instrument.salesman }}</p>
+            {% endif %}
             <a href="{% url 'instrument-detail' instrument_id=instrument.id %}">Деталі</a>
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and instrument.quantity > 0 %}
                 <a href="{% url 'add-to-basket' product_id=instrument.id %}">Додати в кошик</a>
             {% endif %}
         </div>

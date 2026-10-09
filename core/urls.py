@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from core_profile.views import *
 
 
 urlpatterns = [
@@ -26,6 +27,7 @@ urlpatterns = [
     path('', include('core_auth_system.urls')),
     path('', include('core_menu.urls')),
     path('', include('core_basket.urls')),
+    path('', include('core_order.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

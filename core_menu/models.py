@@ -21,6 +21,7 @@ class Instrument(models.Model):
     brand = models.CharField(max_length=50)
     product_condition = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)])
     complectation = models.TextField()
+    quantity = models.IntegerField(default=1)
     instrument_image = models.ImageField(upload_to='instruments_images/')
     price = models.IntegerField()
     issue_date = models.DateTimeField(auto_now_add=True)

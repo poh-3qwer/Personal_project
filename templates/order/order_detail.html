@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Ваше замовлення</h1>
+
+    <div>
+        <div>
+            <h3>Замовник: {{ order.account }}</h3>
+            <p>Спосіб оплати: {{ order.get_payment_display }}</p>
+            <p>Статус замовлення: {{ order.get_status_display }}</p>
+            <p>Адреса доставки: {{ order.delivery_adress }}</p>
+            <p>Загальна сума: {{ order.total_price }} $</p>
+            <p>Дата створення: {{ order.date_of_creation }}</p>
+        </div>
+        <div>
+            {% for item in order.items.all %}
+                <h3>Назва: {{ item.instrument.name }}</h3>
+                <img src="{{ item.instrument.instrument_image.url}}" width="350" height="200">
+                <p>Виробник: {{ item.instrument.manufacturer }}</p>
+                <p>Дата виставлення на продажу: {{ item.instrument.issue_date }}</p>
+                <p>Ціна: {{ item.price }} $</p>
+                <p>Кількість: {{ item.quantity }}</p>
+            {% endfor %}
+        </div>
+
+        {% if order.payment == 'online_payment' and order.status == 'new' %}
+            <a href="{% url 'payment' order_id=order.id %}">Перейти до оплати</a>
+        {% endif %}
+        {% if order.status == 'new' %}
+            <a href="{% url 'delete-order' order_id=order.id %}">Видалити замовлення</a>
+        {% endif %}
+        {% if order.status == 'processing' %}
+            <a href="{% url 'cancel-order' order_id=order.id %}">Скасувати замовлення</a>
+        {% endif %}
+        <a href="{% url 'orders-list' %}">Список замовлень</a>
+    </div>
+{% endblock %} 
+
+/// Сделать уведомление юзеру, который владеет товаром про то что ему нужно упаковать и отправть его.
+/// Сделать кнопку для подтверждение отправки, чтобы изменялся статус заказа.
+/// Сделать уведомление юзеру про то что заказ был отменен.

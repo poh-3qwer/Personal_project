@@ -4,12 +4,12 @@
 
     {% for basket_item in basket_items_list %}
         <div>
-            <img src="{{ basket_item.product.instrument_image.url }}" width="300" height="200" alt="Інструмент">
+            <img src="{{ basket_item.product.instrument_image.url }}" width="350" height="200" alt="Інструмент">
             <h5>{{ basket_item.product.name }}</h5>
             <p>{{ basket_item.product.get_category_display }}</p>
             <p>{{ basket_item.product.manufacturer }}</p>
             <p>{{ basket_item.product.issue_date }}</p>
-            <p>{{ basket_item.product.price }}</p>
+            <p>{{ basket_item.product.price }} $</p>
             <a href="{% url 'delete-item' basket_id=basket.pk item_id=basket_item.id %}">Видалити з кошика</a>
         </div>
 
@@ -20,7 +20,10 @@
 
                 <span>{{ basket_item.quantity }}</span>
 
-                <button type="submit" name="action" value="increase"> + </button>
+                <button type="submit" 
+                        name="action" 
+                        value="increase"
+                        {% if basket_item.quantity >= basket_item.product.quantity %}disabled{% endif %}> + </button>
             </form>
         </div>
 
@@ -28,6 +31,13 @@
         <p>Ваш кошик порожній</p>
     {% endfor %}
 
-    <p>Загальна сума: {{ total_sum }} ₴</p>
+    <p>Загальна сума: {{ total_sum }} $</p>
 
+    {% if basket_items_list %}
+        <a href="{% url 'create-order' %}">Створити замовлення</a>
+    {% endif %}
+
+    {% if orders_list %}
+        <a href="{% url 'orders-list' %}">Список замовлень</a>
+    {% endif %}
 {% endblock %}

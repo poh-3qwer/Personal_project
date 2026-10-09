@@ -82,3 +82,4 @@ def instruments_filter(request, category):
     instruments_list_filtered = Instrument.objects.filter(category=category)
 
     return render(request, 'menu/instruments_filter.html', {'instruments_list_filtered': instruments_list_filtered, 'category': category})
+

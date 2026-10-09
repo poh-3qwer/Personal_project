@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Підтвердження відправки</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% if order.status == 'cancelled' %}
+            <button type="button" disabled>Замовлення скасовано</button>
+        {% else %}
+            <button type="submit">Відправлено</button>
+        {% endif %}
+    </form>
+    
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Скасувати замовлення</h1>
+
+    <h2>Ви впевнені, що хочете скасувати своє замовлення?</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Скасувати</button>
+        <a href="{% url 'order-detail' order_id=order.id %}">Повернутися</a>
+    </form>
+{% endblock %}

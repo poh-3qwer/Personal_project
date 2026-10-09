@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'core_auth_system',
     'core_menu',
     'core_basket',
+    'core_order',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +69,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'core.context_processors.orders_list',
+                'core.context_processors.has_products',
+                'core.context_processors.has_products_to_ship',
+                'core.context_processors.has_cancelled_order',
             ],
         },
     },

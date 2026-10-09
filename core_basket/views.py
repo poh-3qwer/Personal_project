@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from core_basket.models import *
 from core_menu.models import Instrument
 from core_basket.forms import *
+from django.http import HttpResponseForbidden
 
 
 @login_required
@@ -26,14 +27,19 @@ def basket_items_list(request, basket_id):
 def add_to_basket(request, product_id):
     product = get_object_or_404(Instrument, pk=product_id)
 
-    basket, created = Basket.objects.get_or_create(account=request.user.account)
+    if request.user.account != product.salesman:
 
-    item, created = BasketItem.objects.get_or_create(basket=basket, product=product)
+        basket, created = Basket.objects.get_or_create(account=request.user.account)
 
-    if not created:
-        item.quantity += 1
-        item.save()
+        item, created = BasketItem.objects.get_or_create(basket=basket, product=product)
 
+        if not created:
+            if item.quantity < item.product.quantity:
+                item.quantity += 1
+            item.save()
+    else:
+        return HttpResponseForbidden('Будучи власником товару, ви не можете замовити його собі.')
+    
     return redirect('basket-items-list', basket_id=basket.id)
 
 @login_required
@@ -45,14 +51,18 @@ def edit_item_quantity(request, basket_id, item_id):
         action = request.POST.get('action')
 
         if action == 'increase':
-            item.quantity += 1
+
+            if item.quantity < item.product.quantity:
+                    item.quantity += 1
+                    item.save()
+                
         elif action == 'decrease':
             item.quantity -= 1
 
-        if item.quantity <= 0:
-            item.delete()
-        else:
-            item.save()
+            if item.quantity <= 0:
+                item.delete()
+            else:
+                item.save()
 
         return redirect('basket-items-list', basket_id=basket.id)
 

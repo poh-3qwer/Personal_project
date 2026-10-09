@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>Список замовленнь</h1>
+
+    {% for order in orders_list %}
+        <a href="{% url 'order-detail' order_id=order.id %}"> Замовлення {{ order.id }}</a>
+    {% endfor %}
+    
+{% endblock %}

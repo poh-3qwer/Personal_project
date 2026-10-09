@@ -14,6 +14,7 @@ class InstrumentForm(ModelForm):
                   'brand',
                   'product_condition',
                   'complectation',
+                  'quantity',
                   'instrument_image',
                   'price',
                   ]

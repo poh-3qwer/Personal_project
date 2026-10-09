@@ -4,7 +4,7 @@ from core_profile.views import *
 
 urlpatterns = [
     # --- home ---
-    path('home', home, name='home'),
+    path('', home, name='home'),
     # ------
     path('account', account, name='account'),
     path('account-detail/<int:account_id>/', account_detail, name='account-detail'),
