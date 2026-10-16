@@ -30,9 +30,16 @@
             {% endif %}
             <a href="{% url 'instrument-detail' instrument_id=instrument.id %}">Деталі</a>
             {% if user.is_authenticated and instrument.quantity > 0 %}
-                <a href="{% url 'add-to-basket' product_id=instrument.id %}">Додати в кошик</a>
+                {% if request.user.account != instrument.salesman %}
+                    <a href="{% url 'add-to-basket' product_id=instrument.id %}">Додати в кошик</a>
+                {% endif %}
             {% endif %}
         </div>
     {% endfor %}
 
 {% endblock %}
+
+
+
+
+/// Сделать дизайн

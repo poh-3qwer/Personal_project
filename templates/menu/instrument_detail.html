@@ -34,11 +34,14 @@
     {% else %}
         <h4>Продавець: {{ instrument.salesman }}</h4>
     {% endif %}
-    {% if user.is_authenticated and instrument.quantity > 0%}
-        <a href="{% url 'edit-instrument-detail' instrument_id=instrument.id %}">Змінити опис</a>
-
-        <a href="{% url 'delete-instrument' instrument_id=instrument.id %}">Видалити товар</a>
+    {% if user.is_authenticated and instrument.quantity > 0 %}
+        {% if not instrument_in_orders and request.user.account == instrument.salesman %}
+            <a href="{% url 'edit-instrument-detail' instrument_id=instrument.id %}">Змінити опис</a>
+            <a href="{% url 'delete-instrument' instrument_id=instrument.id %}">Видалити товар</a>
+        {% endif %}
         <br>
-        <a href="{% url 'add-to-basket' product_id=instrument.id %}">Додати в кошик</a>
+        {% if request.user.account != instrument.salesman %}
+            <a href="{% url 'add-to-basket' product_id=instrument.id %}">Додати в кошик</a>
+        {% endif %}
     {% endif %}
 {% endblock %}

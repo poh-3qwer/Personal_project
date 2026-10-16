@@ -4,7 +4,8 @@ from core_menu.models import Instrument
 from core_menu.forms import *
 from django.http import HttpResponseForbidden
 from core_basket.models import Basket
-
+from core_order.models import OrderItem
+from django.contrib import messages
 
 def instruments_list(request):
     instruments_list = Instrument.objects.all()
@@ -18,7 +19,9 @@ def instruments_list(request):
 def instrument_detail(request, instrument_id):
     instrument = get_object_or_404(Instrument, pk=instrument_id)
 
-    return render(request, 'menu/instrument_detail.html', {'instrument': instrument})
+    instrument_in_orders = OrderItem.objects.filter(instrument=instrument).exists()
+
+    return render(request, 'menu/instrument_detail.html', {'instrument': instrument, 'instrument_in_orders': instrument_in_orders})
 
 @login_required
 def add_instrument(request):
@@ -47,6 +50,13 @@ def edit_instrument_detail(request, instrument_id):
     if account != instrument.salesman:
         return HttpResponseForbidden('Ви не є власником товару!')
 
+    instrument_in_orders = OrderItem.objects.filter(instrument=instrument).exists()
+
+    if instrument_in_orders:
+        messages.error(request, "Не можливо змінити опис товару, після його замовленням кимось!")
+                       
+        return redirect('instrument-detail', instrument_id=instrument.id)
+
     if request.method == 'POST':
         form = InstrumentForm(request.POST, request.FILES, instance=instrument)
 
@@ -63,7 +73,8 @@ def edit_instrument_detail(request, instrument_id):
                   'menu/edit_instrument.html', 
                   {'form': form,
                    'instrument': instrument,
-                   'account': account}
+                   'account': account,
+                   'instrument_in_orders': instrument_in_orders}
                    )
 
 @login_required
