@@ -10,7 +10,7 @@
         <a href="{% url 'basket-items-list' basket_id=basket.pk %}">Ваш кошик</a>
     {% endif %}
 
-    {% for instrument in instruments_list %}
+    {% for instrument in page_obj %}
         <div>
             <img src="{{ instrument.instrument_image.url }}" width="350" height="200" alt="Інструмент">
             <h5>{{ instrument.name }}</h5>
@@ -36,6 +36,19 @@
             {% endif %}
         </div>
     {% endfor %}
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}"> ← </a>
+        {% endif %}
+
+        <span>
+            Сторінка {{ page_obj.number }} з {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}"> → </a>
+        {% endif %}
+    </div>
 
 {% endblock %}
 

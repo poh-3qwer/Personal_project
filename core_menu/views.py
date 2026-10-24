@@ -6,15 +6,26 @@ from django.http import HttpResponseForbidden
 from core_basket.models import Basket
 from core_order.models import OrderItem
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 def instruments_list(request):
     instruments_list = Instrument.objects.all()
 
     basket = None
+
+    paginator = Paginator(instruments_list, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     if request.user.is_authenticated:
         basket, created = Basket.objects.get_or_create(account=request.user.account)
 
-    return render(request, 'menu/instruments_list.html', {'instruments_list': instruments_list, 'basket': basket})
+    return render(request, 
+                  'menu/instruments_list.html', 
+                  {'instruments_list': instruments_list, 
+                   'basket': basket,
+                   'page_obj': page_obj}
+                   )
 
 def instrument_detail(request, instrument_id):
     instrument = get_object_or_404(Instrument, pk=instrument_id)
@@ -92,5 +103,13 @@ def delete_instrument(request, instrument_id):
 def instruments_filter(request, category):
     instruments_list_filtered = Instrument.objects.filter(category=category)
 
-    return render(request, 'menu/instruments_filter.html', {'instruments_list_filtered': instruments_list_filtered, 'category': category})
+    paginator = Paginator(instruments_list_filtered, 10)
+    page_obj = paginator.get_page(request.GET.get('page'))
+
+    return render(request, 
+                  'menu/instruments_filter.html', 
+                  {'instruments_list_filtered': page_obj, 
+                   'category': category,
+                   'page_obj': page_obj}
+                   )
 
