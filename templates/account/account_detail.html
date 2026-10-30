@@ -1,20 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <div>
-        <a href="{% url 'change-account-detail' account.pk %}">Редагувати</a>
-        <a href="{% url 'delete-account' account.pk %}">Видалити</a>
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'base.css'%}">
+    <br>
+    <div class="ms-3">
+        <a role="button" class="btn btn-outline-primary" href="{% url 'change-account-detail' account.pk %}">Редагувати</a>
+        <a role="button" class="btn btn-outline-danger" href="{% url 'delete-account' account.pk %}">Видалити</a>
     </div>
-
-    <div>
+    <br>
+    <div class="ms-3">
        {% if account.avatar %}
-           <img src="{{ account.avatar.url }}" alt="Аватар" width="200" height="200">
+           <img class="rounded-[15px]" src="{{ account.avatar.url }}" alt="Аватар" width="200" height="200">
        {% else %}
-           <img src="{% static 'default_avatar.jpg' %}" alt="Аватар" width="200" height="200">
+           <img class="rounded-[15px]" src="{% static 'default_avatar.jpg' %}" alt="Аватар" width="200" height="200">
        {% endif %}
     </div>
     <br>
-    <div>
+    <div class="ms-3">
         <h3>Основні відомості: </h3>
         <p>Їм'я: {{ account.human_name }}</p>
         <p>Фамілія: {{ account.human_surname }}</p>
@@ -22,7 +25,7 @@
         <p>Дата реєстрації: {{ account.date_of_registration }}</p>
     </div>
     <br>
-    <div>
+    <div class="ms-3">
         <h3>Додаткові відомості: </h3>
         <p>Про себе: {{ account.bio }}</p>
         <p>E-mail: {{ account.email }}</p>

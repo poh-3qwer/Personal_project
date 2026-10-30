@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 
 def instruments_list(request):
-    instruments_list = Instrument.objects.all()
+    instruments_list = Instrument.objects.all().order_by('-id')
 
     basket = None
 
@@ -101,15 +101,32 @@ def delete_instrument(request, instrument_id):
     return redirect("instruments-list")
 
 def instruments_filter(request, category):
-    instruments_list_filtered = Instrument.objects.filter(category=category)
+    instruments_list_filtered = Instrument.objects.filter(category=category).order_by('-id')
 
     paginator = Paginator(instruments_list_filtered, 10)
     page_obj = paginator.get_page(request.GET.get('page'))
+
+    basket = None
+
+    if request.user.is_authenticated:
+        basket = Basket.objects.filter(account=request.user.account).first()
+
+    categories = {
+        'string_instruments': 'Струнні',
+        'wind_instruments': 'Духові',
+        'percussion_instruments': 'Ударні',
+        'keyboards': 'Клавішні',
+        'electromusical': 'Електромузичні',
+    }
+
+    category_name = categories.get(category, 'Інструменти')
 
     return render(request, 
                   'menu/instruments_filter.html', 
                   {'instruments_list_filtered': page_obj, 
                    'category': category,
-                   'page_obj': page_obj}
+                   'page_obj': page_obj,
+                   'category_name': category_name,
+                   'basket': basket},
                    )
 

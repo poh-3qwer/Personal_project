@@ -1,14 +1,18 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-    <h1>Підтвердження відправки</h1>
-
-    <form method="post">
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'base.css'%}">
+    <br>
+    <h1 class="ms-3">Підтвердження відправки</h1>
+    <br>
+    <form class="ms-3 custom-form" method="post">
         {% csrf_token %}
 
         {% if order.status == 'cancelled' %}
-            <button type="button" disabled>Замовлення скасовано</button>
+            <button class="btn btn-outline-primary" type="button" disabled>Замовлення скасовано</button>
         {% else %}
-            <button type="submit">Відправлено</button>
+            <button class="btn btn-success" type="submit">Відправлено</button>
         {% endif %}
     </form>
     

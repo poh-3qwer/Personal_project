@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-
-    <h1>Видалити з кошика</h1>
-
-    <h3>Ви впевненні, що хочете вилучити цей товар?</h3>
-    <form method="post">
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'base.css'%}">
+    <br>
+    <h1 class="ms-3">Видалити з кошика</h1>
+    <br>
+    <h3 class="ms-3">Ви впевненні, що хочете вилучити цей товар?</h3>
+    <form class="ms-3 custom-form" method="post">
         {% csrf_token %}
-        <button type="submit">Видалити з кошика</button>
+        <button role="button" class="btn btn-danger" type="submit">Видалити з кошика</button>
     </form>
 {% endblock %}

@@ -1,43 +1,54 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-    <h1>Ваш кошик</h1>
-
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'base.css'%}">
+    <br>
+    <h1 class="ms-3">Ваш кошик</h1>
+    <br>
     {% for basket_item in basket_items_list %}
-        <div>
-            <img src="{{ basket_item.product.instrument_image.url }}" width="350" height="200" alt="Інструмент">
-            <h5>{{ basket_item.product.name }}</h5>
-            <p>{{ basket_item.product.get_category_display }}</p>
-            <p>{{ basket_item.product.manufacturer }}</p>
-            <p>{{ basket_item.product.issue_date }}</p>
-            <p>{{ basket_item.product.price }} $</p>
-            <a href="{% url 'delete-item' basket_id=basket.pk item_id=basket_item.id %}">Видалити з кошика</a>
+        <div class="ms-3">
+            <img class="rounded-[15px]" src="{{ basket_item.product.instrument_image.url }}" width="350" height="200" alt="Інструмент">
+            <h5>Назва: {{ basket_item.product.name }}</h5>
+            <p> Категорія: {{ basket_item.product.get_category_display }}</p>
+            <p>Виробник: {{ basket_item.product.manufacturer }}</p>
+            <p>Дата виставлення на продаж: {{ basket_item.product.issue_date }}</p>
+            <p class="green-underline">Ціна: {{ basket_item.product.price }} $</p>
+            <p>Продавець: {{ basket_item.product.salesman }}</p>
+
+            <div class="ms-3">
+                <form  class="ms-3" method="post" action="{% url 'edit-item-quantity' basket_id=basket_item.basket.id item_id=basket_item.id %}">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-secondary" type="submit" name="action" value="decrease"> - </button>
+
+                    <span>{{ basket_item.quantity }}</span>
+
+                    <button class="btn btn-outline-success" 
+                            type="submit" 
+                            name="action" 
+                            value="increase"
+                            {% if basket_item.quantity >= basket_item.product.quantity %}disabled{% endif %}> + </button>
+                </form>
+            </div>
         </div>
-
-        <div>
-            <form method="post" action="{% url 'edit-item-quantity' basket_id=basket_item.basket.id item_id=basket_item.id %}">
-                {% csrf_token %}
-                <button type="submit" name="action" value="decrease"> - </button>
-
-                <span>{{ basket_item.quantity }}</span>
-
-                <button type="submit" 
-                        name="action" 
-                        value="increase"
-                        {% if basket_item.quantity >= basket_item.product.quantity %}disabled{% endif %}> + </button>
-            </form>
+        <br>
+        <div class="ms-3">
+            <a role="button" class="btn btn-outline-danger" href="{% url 'delete-item' basket_id=basket.pk item_id=basket_item.id %}">Видалити з кошика</a>
         </div>
-
+        <br>
+        
     {% empty %}
         <p>Ваш кошик порожній</p>
     {% endfor %}
 
-    <p>Загальна сума: {{ total_sum }} $</p>
+    <p class="ms-3 total_summ">Загальна сума: {{ total_sum }} $</p>
+    <div class="ms-3">
+        {% if basket_items_list %}
+            <a role="button" class="btn btn-primary" href="{% url 'create-order' %}">Створити замовлення</a>
+        {% endif %}
 
-    {% if basket_items_list %}
-        <a href="{% url 'create-order' %}">Створити замовлення</a>
-    {% endif %}
-
-    {% if orders_list %}
-        <a href="{% url 'orders-list' %}">Список замовлень</a>
-    {% endif %}
+        {% if orders_list %}
+            <a role="button" class="btn btn-outline-secondary" href="{% url 'orders-list' %}">Список замовлень</a>
+        {% endif %}
+    </div>
 {% endblock %}

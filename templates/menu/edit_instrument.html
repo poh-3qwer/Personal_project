@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-
-    <form method="post" enctype="multipart/form-data">
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'base.css'%}">
+    <br>
+    <form class="ms-3 custom-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Зберегти зміни</button>
+        <button role="button" class="btn btn-primary" type="submit">Зберегти зміни</button>
     </form>
     
 {% endblock %}

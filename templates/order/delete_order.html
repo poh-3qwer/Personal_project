@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-    <h1>Скасувати замовлення</h1>
-
-    <h2>Ви впевнені, що хочете скасувати своє замовлення?</h2>
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'base.css'%}">
+    <br>
+    <h1 class="ms-3">Скасувати замовлення</h1>
     
-    <form method="post">
+    <h2 class="ms-3">Ви впевнені, що хочете скасувати своє замовлення?</h2>
+    <br>
+    <form class="ms-3 custom-form" method="post">
         {% csrf_token %}
-        <button type="submit">Скасувати</button>
-        <a href="{% url 'order-detail' order_id=order.id %}">Повернутися</a>
+        <button role="button" class="btn btn-danger" type="submit">Скасувати</button>
+        <a role="button" class="btn btn-outline-secondary" href="{% url 'order-detail' order_id=order.id %}">Повернутися</a>
     </form>
 {% endblock %}

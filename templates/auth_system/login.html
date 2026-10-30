@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-    <h1>Логін</h1>
-    <form method="post">
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'base.css'%}">
+    <br>
+    <h1 class="ms-3">Логін</h1>
+    <br>
+    <form class="ms-3 custom-form" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Логін</button>
+        <button class="btn btn-primary" type="submit">Логін</button>
     </form>
 {% endblock %}

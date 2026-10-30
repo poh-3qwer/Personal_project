@@ -1,19 +1,57 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'base.css'%}">
+    <br>
     {% include 'filter.html' %}
+    <br>
+    {% if category == 'electromusical' %}
+        <h1 class="ms-[630px]">{{ category_name }}</h1>
+    {% elif category == 'keyboards' %}
+        <h1 class="ms-[683px]">{{ category_name }}</h1>
+    {% else %}
+        <h1 class="ms-[700px]">{{ category_name }}</h1>
+    {% endif %}
 
-    {% for instrument in instruments_list_filtered %}
-        <div>
-            <img src="{{ instrument.instrument_image.url }}" alt="Інструмент" width="300" height="200">
-            <h5>{{ instrument.name }}</h5>
-            <p>{{ instrument.get_category_display }}</p>
-            <p>{{ instrument.manufacturer }}</p>
-            <p>{{ instrument.issue_date }}</p>
-            <p>{{ instrument.price }}</p>
-            <a href="{% url 'instrument-detail' instrument_id=instrument.id %}">Деталі</a>
-        </div>
-    {% endfor %}
+    <div class="ms-[680px]">
+        <a role="button" class="btn btn-primary" href="{% url 'add-instrument' %}">Додати товар</a>
+        {% if user.is_authenticated and basket %}
+            <a role="button" class="btn btn-primary" href="{% url 'basket-items-list' basket_id=basket.pk %}">🛒</a>
+        {% endif %}
+    </div>
+    <br>
+    <div class="instruments_list">
+        {% for instrument in instruments_list_filtered %}
+            <div class="instrument_images">
+                <img src="{{ instrument.instrument_image.url }}" alt="Інструмент" width="300" height="200">
+                <h5>{{ instrument.name }}</h5>
+                <p>{{ instrument.get_category_display }}</p>
+                <p>{{ instrument.manufacturer }}</p>
+                <p>{{ instrument.issue_date }}</p>
+                <p class="instrument_price">{{ instrument.price }} $</p>
+                {% if instrument.quantity > 0 %}
+                    <p>В наявності: {{ instrument.quantity }} шт.</p>
+                {% else %}
+                    <p>Нема в наявності.</p>
+                {% endif %}
+                {% if instrument.salesman.human_name and instrument.salesman.human_surname %}
+                    <p>Продавець: {{ instrument.salesman.human_name }} {{ instrument.salesman.human_surname }}</p>
+                {% else %}
+                    <p>Продавець: {{ instrument.salesman }}</p>
+                {% endif %}
+                <div class="!important flex gap-[110px]">
+                    <a role="button" class="btn btn-outline-primary" href="{% url 'instrument-detail' instrument_id=instrument.id %}">Деталі</a>
+                    {% if user.is_authenticated and instrument.quantity > 0 %}
+                        {% if request.user.account != instrument.salesman %}
+                            <a role="button" class="btn btn-outline-primary" href="{% url 'add-to-basket' product_id=instrument.id %}">Додати в кошик</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <br>
     <div class="pagination">
         {% if page_obj.has_previous %}
             <a href="?page={{ page_obj.previous_page_number }}"> ← </a>

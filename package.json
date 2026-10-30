@@ -1,6 +1,11 @@
 {
-  "dependencies": {
+  "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
-    "tailwindcss": "^4.3.3"
+    "@tailwindcss/vite": "^4.3.3",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.5"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.5.1": true
   }
 }

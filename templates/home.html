@@ -1,24 +1,40 @@
-{% extends 'base.html' %}
-{% block content %}
-    <h1>Вітаємо на сайті Music World</h1>
-    <h3>Тут ви зможете купляти та продавати 
-        свої музичні речі, зручно шукати потрібне 
-        та мати власну історію купівлі-продажу на сайті</h3>
 
-    {% if user.is_authenticated %}
-        {% if has_products_to_ship %}
-            {% for product in products_to_ship %}
-                <a href="{% url 'sell-message' order_id=product.order.id %}">Товари на відправку</a>
-            {% endfor %}
-        {% endif %}
-        {% for order in cancelled_orders %}
-            <p>Замовлення
-                        {% if order.account == request.user.account %}
-                            <a href="{% url 'order-detail' order_id=order.id %}">{{ order.id }}</a>
-                        {% else %}
-                            {{ order.id }}
-                        {% endif %} 
-            з вашими предметами було скасовано.</p>
-        {% endfor %}
-    {% endif %}
-{% endblock %}     /// Сделать невозможность заказывания продавцом товара самому себе !!!
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'base.css'%}">
+    <br>
+    <h1 class="ms-3">Вітаємо на сайті Music World!</h1>
+    <h3 class="ms-3 site_description">Тут ви зможете купляти та продавати 
+        свої музичні речі, зручно шукати потрібне, 
+        зручно оформлювати замовлення та, якщо ви продавець, 
+        швидко та вчасно реагувати на замовдення, за їхньої наявності.
+    </h3>
+
+    <div class="ship_order">
+        <h3 class="ms-5">Відправки замовлень</h3>
+        <div class="ship_order_messages flex flex-wrap gap-x-2 gap-y-1 -ml-[50px]">
+            {% if user.is_authenticated %}
+                {% if has_products_to_ship %}
+                    {% for product in products_to_ship %}
+                        <a role="button" class="btn btn-primary inline-block"  href="{% url 'sell-message' order_id=product.order.id %}">Товари на відправку</a>
+                    {% endfor %}
+                {% endif %}
+        </div>
+        <br>
+        <div class="cancelled_order_message">
+                {% for order in cancelled_orders %}
+                    <p>Замовлення
+                                {% if order.account == request.user.account %}
+                                    <a role="button" class="btn btn-primary" href="{% url 'order-detail' order_id=order.id %}">{{ order.id }}</a>
+                                {% else %}
+                                    {{ order.id }}
+                                {% endif %} 
+                    з вашими предметами було скасовано.</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,18 +1,21 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'base.css'%}">
 </head>
-<body>
+<body class="ms-3">
     <h1>Оплата замовлення</h1>
 
-    <h3>До сплати: {{ order.total_price }}</h3>
+    <h3 class="payment_summ">До сплати: {{ order.total_price }} $</h3>
 
-    <form method="post">
+    <form method="post custom-form">
         {% csrf_token %}
-        <button type="submit">Сплатити</button>
+        <button role="button" class="btn btn-success" type="submit">Сплатити</button>
+        <a role="button" class="btn btn-outline-secondary" href="{% url 'order-detail' order_id=order.id %}">Повернутися</a>
     </form>
-    <a href="{% url 'order-detail' order_id=order.id %}">Повернутися</a>
 </body>
 </html>

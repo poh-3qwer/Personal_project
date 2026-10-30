@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-    <h1>Видалити акаунт</h1>
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'base.css'%}">
     <br>
-    <h2>Ви впевнені, що хочете видалити ваш акаунт?</h2>
-    <form method="post" enctype="multipart/form-data">
+    <h1 class="ms-3">Видалити акаунт</h1>
+    <br>
+    <h2 class="ms-3">Ви впевнені, що хочете видалити ваш акаунт?</h2>
+    <form class="ms-3 custom-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <button type="submit">Видалити</button>
+        <button class="btn btn-danger" type="submit">Видалити</button>
     </form>
 {% endblock %}
