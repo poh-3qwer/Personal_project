@@ -15,8 +15,8 @@
     {% endif %}
 
     <div class="ms-[680px]">
-        <a role="button" class="btn btn-primary" href="{% url 'add-instrument' %}">Додати товар</a>
         {% if user.is_authenticated and basket %}
+            <a role="button" class="btn btn-primary" href="{% url 'add-instrument' %}">Додати товар</a>
             <a role="button" class="btn btn-primary" href="{% url 'basket-items-list' basket_id=basket.pk %}">🛒</a>
         {% endif %}
     </div>
